@@ -1,44 +1,40 @@
-package pl.mr_electronics.showusers.model;
-
+package pl.mr_electronics.showusers.model.tools;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.mr_electronics.showusers.model.ado.BitbucketADO;
-import pl.mr_electronics.showusers.model.tools.ResponseListener;
-import pl.mr_electronics.showusers.model.tools.RestClient;
+import pl.mr_electronics.showusers.model.UserObj;
+import pl.mr_electronics.showusers.model.ado.GitHubADO;
 
-public class UserBitbucketGetter extends RestClient {
+public class UserGithubGetter extends RestClient {
     ResponseListener respListener;
 
-    public UserBitbucketGetter(ResponseListener respListener) {
+    public UserGithubGetter(ResponseListener respListener) {
         if (respListener == null)
             throw new IllegalArgumentException("respListener can't be null.");
         this.respListener = respListener;
     }
 
     public void downloadList() {
-        sendGet("https://api.bitbucket.org/2.0/repositories?fields=values.name,values.owner,values.description");
+        sendGet("https://api.github.com/repositories");
     }
 
     private List<UserObj> parseResponse(String msg) {
         Gson gson = new Gson();
-        BitbucketADO obj = gson.fromJson(msg, BitbucketADO.class);
+        GitHubADO[] obj = gson.fromJson(msg, GitHubADO[].class);
 
         List<UserObj> list = new ArrayList<>();
-        for(BitbucketADO.Value v : obj.values) {
+        for(GitHubADO o : obj) {
             UserObj u = new UserObj();
-            u.reposytory = "Bitbucket";
-            u.name = v.owner.display_name;
-            u.avatar_url = v.owner.links.avatar.href;
+            u.reposytory = "GitHub";
+            u.name = o.owner.login;
+            u.avatar_url = o.owner.avatar_url;
             list.add(u);
         }
         return list;
     }
-
-
 
     @Override
     public void responseMessage(String msg) {

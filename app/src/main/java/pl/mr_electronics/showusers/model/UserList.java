@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.mr_electronics.showusers.model.tools.ResponseListener;
+import pl.mr_electronics.showusers.model.tools.UserGithubGetter;
 
 public class UserList implements ResponseListener {
 
@@ -13,9 +14,11 @@ public class UserList implements ResponseListener {
         // Clear current list before update
         users.clear();
         // Download user list from Bitbucket
-        UserBitbucketGetter u = new UserBitbucketGetter(this);
-        u.downloadList();
+        UserBitbucketGetter usersBitbucket = new UserBitbucketGetter(this);
+        usersBitbucket.downloadList();
         //TODO: Download users from GitHub
+        UserGithubGetter usersGithub = new UserGithubGetter(this);
+        usersGithub.downloadList();
     }
 
 

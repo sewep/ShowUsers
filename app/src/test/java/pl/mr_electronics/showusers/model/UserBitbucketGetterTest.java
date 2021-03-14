@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.io.InputStream;
 
 import pl.mr_electronics.showusers.model.tools.Converters;
+import pl.mr_electronics.showusers.model.tools.UserGithubGetter;
 
 public class UserBitbucketGetterTest extends TestCase {
 
@@ -23,11 +24,16 @@ public class UserBitbucketGetterTest extends TestCase {
 
     public void testParseResponse() {
         // Download example data
-        InputStream is = UserBitbucketGetterTest.class.getResourceAsStream("/bitbucket.json");
-        String str = Converters.convertStreamToString(is);
+        InputStream isBit = UserBitbucketGetterTest.class.getResourceAsStream("/bitbucket.json");
+        String strBit = Converters.convertStreamToString(isBit);
+        InputStream isGit = UserBitbucketGetterTest.class.getResourceAsStream("/github.json");
+        String strGit = Converters.convertStreamToString(isGit);
 
         UserBitbucketGetter o = new UserBitbucketGetter(uList);
-        o.responseMessage(str);
+        o.responseMessage(strBit);
+
+        UserGithubGetter g = new UserGithubGetter(uList);
+        g.responseMessage(strGit);
 
         System.out.println("UserList count = " + uList.users.size());
     }
