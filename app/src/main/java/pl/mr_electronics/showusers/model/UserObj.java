@@ -1,6 +1,6 @@
 package pl.mr_electronics.showusers.model;
 
-class UserObj {
+public class UserObj {
 
     public String name;
     public String avatar;
