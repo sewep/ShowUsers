@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.io.InputStream;
 
 import pl.mr_electronics.showusers.model.tools.Converters;
+import pl.mr_electronics.showusers.model.tools.UserBitbucketGetter;
 import pl.mr_electronics.showusers.model.tools.UserGithubGetter;
 
 public class UserBitbucketGetterTest extends TestCase {

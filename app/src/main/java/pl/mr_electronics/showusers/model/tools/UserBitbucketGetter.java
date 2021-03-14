@@ -1,4 +1,4 @@
-package pl.mr_electronics.showusers.model;
+package pl.mr_electronics.showusers.model.tools;
 
 
 import com.google.gson.Gson;
@@ -6,9 +6,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.mr_electronics.showusers.model.UserObj;
 import pl.mr_electronics.showusers.model.ado.BitbucketADO;
-import pl.mr_electronics.showusers.model.tools.ResponseListener;
-import pl.mr_electronics.showusers.model.tools.RestClient;
 
 public class UserBitbucketGetter extends RestClient {
     ResponseListener respListener;

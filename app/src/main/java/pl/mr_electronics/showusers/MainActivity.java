@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import pl.mr_electronics.showusers.model.UserBitbucketGetter;
 import pl.mr_electronics.showusers.model.UserList;
 
 public class MainActivity extends AppCompatActivity {
