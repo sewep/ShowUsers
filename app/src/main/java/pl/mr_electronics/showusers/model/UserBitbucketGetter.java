@@ -1,6 +1,8 @@
 package pl.mr_electronics.showusers.model;
 
 
+import java.util.List;
+
 import pl.mr_electronics.showusers.model.tools.RestClient;
 
 public class UserBitbucketGetter extends RestClient {
@@ -9,6 +11,9 @@ public class UserBitbucketGetter extends RestClient {
         sendGet("https://api.bitbucket.org/2.0/repositories?fields=values.name,values.owner,values.description");
     }
 
+    public List<UserObj> parseResponse(String msg) {
+        return null;
+    }
 
 
 
