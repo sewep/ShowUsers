@@ -3,6 +3,8 @@ package pl.mr_electronics.showusers.model;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import pl.mr_electronics.showusers.model.tools.AvatarDownloader;
@@ -46,6 +48,15 @@ public class UserList implements ResponseListener {
 
     public List<UserObj> getUsers() {
         return users;
+    }
+
+    public void sortByRepositoryName() {
+        Collections.sort(users, new Comparator<UserObj>() {
+            @Override
+            public int compare(UserObj o1, UserObj o2) {
+                return o1.reposytory.compareToIgnoreCase(o2.reposytory);
+            }
+        });
     }
 
     @Override

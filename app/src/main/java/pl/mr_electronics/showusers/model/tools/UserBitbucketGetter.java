@@ -28,11 +28,11 @@ public class UserBitbucketGetter extends RestClient {
 
         List<UserObj> list = new ArrayList<>();
         for(BitbucketADO.Value v : obj.values) {
-            if (isListContains(list, v.owner.display_name)) continue;
+            //if (isListContains(list, v.owner.display_name)) continue;
 
             UserObj u = new UserObj();
             u.isHighlighted = true;
-            u.reposytory = "Bitbucket";
+            u.reposytory = v.name;
             u.name = v.owner.display_name;
             u.avatar_url = v.owner.links.avatar.href;
             list.add(u);

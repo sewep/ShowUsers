@@ -1,7 +1,10 @@
 package pl.mr_electronics.showusers.mvp.main;
 
+import java.util.List;
+
 import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserListCom;
+import pl.mr_electronics.showusers.model.UserObj;
 
 class MainActivityPresenter implements MainActivityContract.Presenter, UserListCom {
 
@@ -28,6 +31,7 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
 
     @Override
     public void loadListReady() {
+        users.sortByRepositoryName();
         view.showList(users.getUsers());
     }
 }

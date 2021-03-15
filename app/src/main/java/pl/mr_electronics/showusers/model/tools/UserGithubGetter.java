@@ -27,11 +27,11 @@ public class UserGithubGetter extends RestClient {
 
         List<UserObj> list = new ArrayList<>();
         for(GitHubADO o : obj) {
-            if (isListContains(list, o.owner.login)) continue;
+            //if (isListContains(list, o.owner.login)) continue;
 
             UserObj u = new UserObj();
             u.isHighlighted = false;
-            u.reposytory = "GitHub";
+            u.reposytory = o.name;
             u.name = o.owner.login;
             u.avatar_url = o.owner.avatar_url;
             list.add(u);
