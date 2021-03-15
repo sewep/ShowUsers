@@ -31,6 +31,7 @@ public class UserBitbucketGetter extends RestClient {
             if (isListContains(list, v.owner.display_name)) continue;
 
             UserObj u = new UserObj();
+            u.isHighlighted = true;
             u.reposytory = "Bitbucket";
             u.name = v.owner.display_name;
             u.avatar_url = v.owner.links.avatar.href;

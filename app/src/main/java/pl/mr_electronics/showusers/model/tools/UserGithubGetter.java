@@ -30,6 +30,7 @@ public class UserGithubGetter extends RestClient {
             if (isListContains(list, o.owner.login)) continue;
 
             UserObj u = new UserObj();
+            u.isHighlighted = false;
             u.reposytory = "GitHub";
             u.name = o.owner.login;
             u.avatar_url = o.owner.avatar_url;
