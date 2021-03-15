@@ -1,16 +1,9 @@
 package pl.mr_electronics.showusers.model;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import pl.mr_electronics.showusers.model.tools.AvatarDownloader;
 import pl.mr_electronics.showusers.model.tools.ResponseListener;
@@ -21,6 +14,7 @@ public class UserList implements ResponseListener {
 
     List<UserObj> users = new ArrayList<>();
     int runListDownload = 0;
+    UserListCom userListCom;
 
     public void downloadUsersLists() {
         // Clear current list before update
@@ -46,6 +40,14 @@ public class UserList implements ResponseListener {
         System.out.println("downloadMissingAvatars end.");
     }
 
+    public void setUserListCom(UserListCom userListCom) {
+        this.userListCom = userListCom;
+    }
+
+    public List<UserObj> getUsers() {
+        return users;
+    }
+
     @Override
     public void ReceiveNewUserList(List<UserObj> list) {
         users.addAll(list);
@@ -55,6 +57,9 @@ public class UserList implements ResponseListener {
         if (runListDownload == 0) {
             downloadMissingAvatars();
             Log.i("userreceive","avatars is update");
+            if (userListCom != null) {
+                userListCom.loadListReady();
+            }
         }
     }
 

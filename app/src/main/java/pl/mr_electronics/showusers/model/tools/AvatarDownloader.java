@@ -34,7 +34,7 @@ public class AvatarDownloader {
                     System.out.println("Avatar download ok");
                     Log.i("userreceive","Avatar download ok");
                 } else {
-                    //TODO: Load default avatar
+                    // Load default avatar
                     Bitmap bmp2 = BitmapFactory.decodeResource(Globals.context.getResources(),
                             R.drawable.noawatar);
                     userObj.avatar = getResizedBitmap(bmp2, 64, 64);
