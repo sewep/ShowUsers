@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -48,6 +49,8 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
         users.add(o1);
 
         ListUsers adapter = new ListUsers(this, R.id.list_view, users);
+        //String[] listItem = new String[] {"one", "two", "three"};
+        //final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, listItem);
         list_view.setAdapter(adapter);
     }
 

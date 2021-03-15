@@ -15,11 +15,11 @@ import pl.mr_electronics.showusers.R;
 import pl.mr_electronics.showusers.model.UserObj;
 
 public class ListUsers extends ArrayAdapter<UserObj> {
-    Activity context;
+    private Activity context;
     List<UserObj> list;
 
     public ListUsers(Activity context, int resource, List<UserObj> list) {
-        super(context, resource);
+        super(context, resource, list);
         this.context = context;
         this.list = list;
     }
