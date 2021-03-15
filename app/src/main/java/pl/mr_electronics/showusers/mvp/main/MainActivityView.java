@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -18,7 +17,6 @@ import java.util.List;
 import pl.mr_electronics.showusers.Globals;
 import pl.mr_electronics.showusers.R;
 import pl.mr_electronics.showusers.controls.ListUsers;
-import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserObj;
 
 public class MainActivityView extends AppCompatActivity implements MainActivityContract.View {
@@ -49,14 +47,17 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
         users.add(o1);
 
         ListUsers adapter = new ListUsers(this, R.id.list_view, users);
-        //String[] listItem = new String[] {"one", "two", "three"};
-        //final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, listItem);
         list_view.setAdapter(adapter);
     }
 
     @Override
     public void showLoadingStatus() {
-
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

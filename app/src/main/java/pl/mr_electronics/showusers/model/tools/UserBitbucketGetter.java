@@ -28,6 +28,8 @@ public class UserBitbucketGetter extends RestClient {
 
         List<UserObj> list = new ArrayList<>();
         for(BitbucketADO.Value v : obj.values) {
+            if (isListContains(list, v.owner.display_name)) continue;
+
             UserObj u = new UserObj();
             u.reposytory = "Bitbucket";
             u.name = v.owner.display_name;
@@ -35,6 +37,13 @@ public class UserBitbucketGetter extends RestClient {
             list.add(u);
         }
         return list;
+    }
+
+    boolean isListContains(List<UserObj> list, String name) {
+        for (UserObj o : list) {
+            if (o.name.equals(name)) return true;
+        }
+        return false;
     }
 
 

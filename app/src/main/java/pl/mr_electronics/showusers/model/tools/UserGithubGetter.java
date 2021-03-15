@@ -27,6 +27,8 @@ public class UserGithubGetter extends RestClient {
 
         List<UserObj> list = new ArrayList<>();
         for(GitHubADO o : obj) {
+            if (isListContains(list, o.owner.login)) continue;
+
             UserObj u = new UserObj();
             u.reposytory = "GitHub";
             u.name = o.owner.login;
@@ -34,6 +36,13 @@ public class UserGithubGetter extends RestClient {
             list.add(u);
         }
         return list;
+    }
+
+    boolean isListContains(List<UserObj> list, String name) {
+        for (UserObj o : list) {
+            if (o.name.equals(name)) return true;
+        }
+        return false;
     }
 
     @Override
