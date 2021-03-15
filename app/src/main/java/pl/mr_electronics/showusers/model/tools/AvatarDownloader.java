@@ -3,7 +3,6 @@ package pl.mr_electronics.showusers.model.tools;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.provider.Settings;
 import android.util.Log;
 
 import java.io.IOException;
@@ -17,6 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import pl.mr_electronics.showusers.Globals;
 import pl.mr_electronics.showusers.R;
+import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserObj;
 
 public class AvatarDownloader {
@@ -25,32 +25,31 @@ public class AvatarDownloader {
     List<BitmapCache> bitmapCaches = new ArrayList<>();
 
     public void downloadAvatar(UserObj userObj) {
-        runThreads++;
+
+        if (isUrlInBitmapCache(userObj.avatar_url)) {
+            Log.i("userreceive","Avatar is downloadin by other thread.");
+            return;
+        }
+        BitmapCache bitmapCache = new BitmapCache(userObj.avatar_url, null);
+        bitmapCaches.add(bitmapCache);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                Bitmap bmp = findBitmapInCache(userObj.avatar_url);
-                boolean addToCache = false;
-                if (bmp == null) {
-                    bmp = getBitmapFromURL(userObj.avatar_url);
-                    addToCache = true;
-                }
+
+                runThreads++;
+
+                Bitmap bmp = getBitmapFromURL(userObj.avatar_url);
                 if (bmp != null) {
-                    userObj.avatar = getResizedBitmap(bmp, 64, 64);
-                    System.out.println("Avatar download ok");
+                    bitmapCache.bitmap = getResizedBitmap(bmp, 64, 64);
                     Log.i("userreceive","Avatar download ok");
                 } else {
                     // Load default avatar
                     Bitmap bmp2 = BitmapFactory.decodeResource(Globals.context.getResources(),
                             R.drawable.noawatar);
-                    userObj.avatar = getResizedBitmap(bmp2, 64, 64);
-                    System.out.println("Avatar default image");
+                    bitmapCache.bitmap = getResizedBitmap(bmp2, 64, 64);
                     Log.i("userreceive","Avatar default image");
-                }
-                if (addToCache && bmp != null) {
-                    bitmapCaches.add(new BitmapCache(userObj.avatar_url, bmp));
                 }
 
                 downloaded++;
@@ -71,6 +70,15 @@ public class AvatarDownloader {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        Log.i("userreceive","Avatar image in cach: " + bitmapCaches.size());
+    }
+
+    public void assignBmpToUrlFromCache(UserList userList) {
+        for (int i = 0; i < userList.getUsers().size(); i++) {
+            UserObj userObj = userList.getUsers().get(i);
+            userObj.avatar = findBitmapInCache(userObj.avatar_url);
         }
     }
 
@@ -108,11 +116,30 @@ public class AvatarDownloader {
         return resizedBitmap;
     }
 
+    boolean isUrlInBitmapCache(String url) {
+        for (int i = 0; i < bitmapCaches.size(); i++) {
+            if (bitmapCaches.get(i).url.equals(url)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     Bitmap findBitmapInCache(String url) {
         for (int i = 0; i < bitmapCaches.size(); i++) {
             if (bitmapCaches.get(i).url.equals(url)) {
                 Log.i("mcache", "Image from cache.");
                 return bitmapCaches.get(i).bitmap;
+            }
+        }
+        return null;
+    }
+
+    BitmapCache findBitmapCache(String url) {
+        for (int i = 0; i < bitmapCaches.size(); i++) {
+            if (bitmapCaches.get(i).url.equals(url)) {
+                Log.i("mcache", "Image from cache.");
+                return bitmapCaches.get(i);
             }
         }
         return null;

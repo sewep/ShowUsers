@@ -49,6 +49,7 @@ public class UserList implements ResponseListener {
         }
         downloader.waitToEnd();
         System.out.println("downloadMissingAvatars end.");
+        downloader.assignBmpToUrlFromCache(this);
     }
 
     public void setUserListCom(UserListCom userListCom) {
