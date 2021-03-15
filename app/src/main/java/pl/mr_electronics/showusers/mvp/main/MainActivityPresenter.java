@@ -6,7 +6,6 @@ import android.os.Bundle;
 import pl.mr_electronics.showusers.Globals;
 import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserListCom;
-import pl.mr_electronics.showusers.model.UserObj;
 import pl.mr_electronics.showusers.mvp.details.DetailsActivityView;
 
 class MainActivityPresenter implements MainActivityContract.Presenter, UserListCom {
@@ -30,7 +29,6 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
     @Override
     public void showDetailsUser(int position) {
         if (users != null) {
-            UserObj userObj = users.getUsers().get(position);
             Intent intent = new Intent(Globals.context, DetailsActivityView.class);
             Bundle b = new Bundle();
             b.putInt("position", position);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import pl.mr_electronics.showusers.R;
+import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserObj;
 
 public class DetailsActivityView extends AppCompatActivity {
@@ -20,7 +21,14 @@ public class DetailsActivityView extends AppCompatActivity {
         if(b != null)
             position = b.getInt("position");
 
+        UserObj obj = null;
+        if (position >= 0) {
+            UserList userList = UserList.getInstance();
+            obj = userList.getUsers().get(position);
+        }
 
-        Log.i("DetailsActiv", "" + position);
+
+
+        Log.i("DetailsActiv", "" + position + " " + obj.toString());
     }
 }

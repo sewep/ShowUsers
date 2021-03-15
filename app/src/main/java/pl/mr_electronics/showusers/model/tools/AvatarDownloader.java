@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,6 +22,7 @@ import pl.mr_electronics.showusers.model.UserObj;
 public class AvatarDownloader {
     int runThreads = 0;
     int downloaded = 0;
+    List<BitmapCache> bitmapCaches = new ArrayList<>();
 
     public void downloadAvatar(UserObj userObj) {
         runThreads++;
@@ -28,7 +31,12 @@ public class AvatarDownloader {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                Bitmap bmp = getBitmapFromURL(userObj.avatar_url);
+                Bitmap bmp = findBitmapInCache(userObj.avatar_url);
+                boolean addToCache = false;
+                if (bmp == null) {
+                    bmp = getBitmapFromURL(userObj.avatar_url);
+                    addToCache = true;
+                }
                 if (bmp != null) {
                     userObj.avatar = getResizedBitmap(bmp, 64, 64);
                     System.out.println("Avatar download ok");
@@ -41,6 +49,10 @@ public class AvatarDownloader {
                     System.out.println("Avatar default image");
                     Log.i("userreceive","Avatar default image");
                 }
+                if (addToCache && bmp != null) {
+                    bitmapCaches.add(new BitmapCache(userObj.avatar_url, bmp));
+                }
+
                 downloaded++;
                 System.out.println("Avatar downloaded " + downloaded);
                 runThreads--;
@@ -94,5 +106,25 @@ public class AvatarDownloader {
                 matrix, false);
 
         return resizedBitmap;
+    }
+
+    Bitmap findBitmapInCache(String url) {
+        for (int i = 0; i < bitmapCaches.size(); i++) {
+            if (bitmapCaches.get(i).url.equals(url)) {
+                Log.i("mcache", "Image from cache.");
+                return bitmapCaches.get(i).bitmap;
+            }
+        }
+        return null;
+    }
+
+    class BitmapCache {
+        public String url;
+        public Bitmap bitmap;
+
+        public BitmapCache(String url, Bitmap bitmap) {
+            this.url = url;
+            this.bitmap = bitmap;
+        }
     }
 }
