@@ -1,9 +1,14 @@
 package pl.mr_electronics.showusers.model;
 
-class UserObj {
+import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
+public class UserObj {
+
+    public boolean isHighlighted;
     public String name;
-    public String avatar;
+    public Bitmap avatar;
     public String reposytory;
     public String avatar_url;
 }
