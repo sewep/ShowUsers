@@ -34,6 +34,7 @@ public class UserGithubGetter extends RestClient {
             u.reposytory = o.name;
             u.name = o.owner.login;
             u.avatar_url = o.owner.avatar_url;
+            u.info = o.html_url;
             list.add(u);
         }
         return list;

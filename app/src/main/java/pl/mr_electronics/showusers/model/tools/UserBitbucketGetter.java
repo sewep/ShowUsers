@@ -35,6 +35,7 @@ public class UserBitbucketGetter extends RestClient {
             u.reposytory = v.name;
             u.name = v.owner.display_name;
             u.avatar_url = v.owner.links.avatar.href;
+            u.info = v.owner.links.html.href;
             list.add(u);
         }
         return list;
