@@ -14,9 +14,18 @@ import pl.mr_electronics.showusers.model.tools.UserGithubGetter;
 
 public class UserList implements ResponseListener {
 
+    private static UserList instance = null;
     List<UserObj> users = new ArrayList<>();
     int runListDownload = 0;
     UserListCom userListCom;
+
+    private UserList() {};
+    public static UserList getInstance() {
+        if (instance == null) {
+            instance = new UserList();
+        }
+        return instance;
+    }
 
     public void downloadUsersLists() {
         // Clear current list before update

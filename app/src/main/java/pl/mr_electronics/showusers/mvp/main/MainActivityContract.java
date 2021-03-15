@@ -8,7 +8,7 @@ public interface MainActivityContract {
 
     interface Presenter {
         void downloadBase();
-        void showDetailsUser();
+        void showDetailsUser(int position);
     }
 
     interface View {

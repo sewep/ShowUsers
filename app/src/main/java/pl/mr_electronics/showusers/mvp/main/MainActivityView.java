@@ -2,16 +2,14 @@ package pl.mr_electronics.showusers.mvp.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.mr_electronics.showusers.Globals;
@@ -24,6 +22,7 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
     MainActivityContract.Presenter presenter;
     ListView list_view;
     ProgressBar progressBar;
+    List<UserObj> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +35,12 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
         Globals.context = this;
         presenter = new MainActivityPresenter(this);
 
-        Bitmap bmp1 = BitmapFactory.decodeResource(Globals.context.getResources(),
-                R.drawable.noawatar);
-        // Test
-        List<UserObj> users = new ArrayList<>();
-        UserObj o1 = new UserObj();
-        o1.name = "Test 1";
-        o1.reposytory = "rep";
-        o1.avatar = bmp1;
-        users.add(o1);
-
-        ListUsers adapter = new ListUsers(this, R.id.list_view, users);
-        list_view.setAdapter(adapter);
+        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                presenter.showDetailsUser(position);
+            }
+        });
     }
 
     @Override

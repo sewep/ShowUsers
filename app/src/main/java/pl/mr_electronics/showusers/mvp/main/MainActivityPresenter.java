@@ -1,10 +1,13 @@
 package pl.mr_electronics.showusers.mvp.main;
 
-import java.util.List;
+import android.content.Intent;
+import android.os.Bundle;
 
+import pl.mr_electronics.showusers.Globals;
 import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserListCom;
 import pl.mr_electronics.showusers.model.UserObj;
+import pl.mr_electronics.showusers.mvp.details.DetailsActivityView;
 
 class MainActivityPresenter implements MainActivityContract.Presenter, UserListCom {
 
@@ -14,7 +17,7 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
     public MainActivityPresenter(MainActivityContract.View view) {
         this.view = view;
 
-        users = new UserList();
+        users = UserList.getInstance();
         users.setUserListCom(this);
         users.downloadUsersLists();
     }
@@ -25,8 +28,15 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
     }
 
     @Override
-    public void showDetailsUser() {
-
+    public void showDetailsUser(int position) {
+        if (users != null) {
+            UserObj userObj = users.getUsers().get(position);
+            Intent intent = new Intent(Globals.context, DetailsActivityView.class);
+            Bundle b = new Bundle();
+            b.putInt("position", position);
+            intent.putExtras(b);
+            Globals.context.startActivity(intent);
+        }
     }
 
     @Override

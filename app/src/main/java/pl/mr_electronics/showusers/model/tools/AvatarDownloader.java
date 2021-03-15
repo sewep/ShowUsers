@@ -68,6 +68,7 @@ public class AvatarDownloader {
             HttpsURLConnection connection = (HttpsURLConnection) url
                     .openConnection();
             connection.setDoInput(true);
+            connection.setUseCaches(true);
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);

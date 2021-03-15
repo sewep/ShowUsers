@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Showusers">
+        <activity android:name=".mvp.details.DetailsActivityView"></activity>
         <activity android:name=".mvp.main.MainActivityView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
