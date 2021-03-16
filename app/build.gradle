@@ -28,6 +28,12 @@ android {
     }
 }
 
+android.applicationVariants.all { variant ->
+    variant.outputs.all {
+        outputFileName = "ShowUsers-${variant.versionName}.apk"
+    }
+}
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.2.0'

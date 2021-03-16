@@ -61,12 +61,11 @@ public class UserList implements ResponseListener {
     }
 
     public void sortByRepositoryName() {
-        Collections.sort(users, new Comparator<UserObj>() {
-            @Override
-            public int compare(UserObj o1, UserObj o2) {
-                return o1.reposytory.compareToIgnoreCase(o2.reposytory);
-            }
-        });
+        Collections.sort(users, (o1, o2) -> o1.reposytory.compareToIgnoreCase(o2.reposytory));
+    }
+
+    public void sortByUserName() {
+        Collections.sort(users, (o1, o2) -> o1.name.compareToIgnoreCase(o2.name));
     }
 
     @Override

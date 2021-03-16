@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +41,9 @@ public class ListUsers extends ArrayAdapter<UserObj> {
         TextView reposytory_name = rowView.findViewById(R.id.reposytory_name);
 
         UserObj obj = list.get(position);
-        root.setBackgroundColor(obj.isHighlighted ? 0xffaaffaa : 0xffffffff);
+        root.setBackgroundColor(obj.isHighlighted
+                ? ContextCompat.getColor(context, R.color.teal_200)
+                : ContextCompat.getColor(context, R.color.white));
         avatar.setImageBitmap(obj.avatar);
         user_name.setText(obj.name);
         reposytory_name.setText(obj.reposytory);

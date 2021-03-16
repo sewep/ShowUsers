@@ -9,6 +9,7 @@ public interface MainActivityContract {
     interface Presenter {
         void downloadBase();
         void showDetailsUser(int position);
+        void selectSortMethod(int sort_id);
     }
 
     interface View {

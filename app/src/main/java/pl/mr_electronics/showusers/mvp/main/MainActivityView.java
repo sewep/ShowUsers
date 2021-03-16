@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
     MainActivityContract.Presenter presenter;
     ListView list_view;
     ProgressBar progressBar;
-    List<UserObj> users;
+    Spinner sort_select;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
 
         list_view = findViewById(R.id.list_view);
         progressBar = findViewById(R.id.progressBar);
+        sort_select = findViewById(R.id.sort_select);
 
         Globals.context = this;
         presenter = new MainActivityPresenter(this);
@@ -39,6 +41,17 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 presenter.showDetailsUser(position);
+            }
+        });
+        sort_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.selectSortMethod(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
