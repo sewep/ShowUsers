@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp.main.MainActivityView">
+    tools:context=".ui.main.MainActivityView">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -16,14 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sort by" />
+                android:text="@string/sort_by" />
 
             <Spinner
                 android:id="@+id/sort_select"

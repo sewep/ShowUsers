@@ -3,6 +3,7 @@
     package="pl.mr_electronics.showusers">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Showusers">
-        <activity android:name=".mvp.details.DetailsActivityView" />
-        <activity android:name=".mvp.main.MainActivityView">
+        <activity android:name=".ui.details.DetailsActivityView" />
+        <activity android:name=".ui.main.MainActivityView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

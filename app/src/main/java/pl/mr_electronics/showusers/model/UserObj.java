@@ -7,7 +7,7 @@ public class UserObj {
     public boolean isHighlighted;
     public String name;
     public Bitmap avatar;
-    public String reposytory;
+    public String repository;
     public String avatar_url;
     public String info;
 }

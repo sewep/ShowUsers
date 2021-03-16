@@ -1,12 +1,16 @@
-package pl.mr_electronics.showusers.mvp.main;
+package pl.mr_electronics.showusers.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.appcompat.app.AlertDialog;
 
 import pl.mr_electronics.showusers.Globals;
 import pl.mr_electronics.showusers.model.UserList;
 import pl.mr_electronics.showusers.model.UserListCom;
-import pl.mr_electronics.showusers.mvp.details.DetailsActivityView;
+import pl.mr_electronics.showusers.ui.details.DetailsActivityView;
 
 class MainActivityPresenter implements MainActivityContract.Presenter, UserListCom {
 
@@ -20,11 +24,6 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
         users = UserList.getInstance();
         users.setUserListCom(this);
         users.downloadUsersLists();
-    }
-
-    @Override
-    public void downloadBase() {
-
     }
 
     @Override
@@ -51,7 +50,8 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
                     break;
             }
 
-            view.showList(users.getUsers());
+            if (users.getUsers() != null && users.getUsers().size() > 0)
+                view.showList(users.getUsers());
         }
     }
 
@@ -59,5 +59,18 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
     public void loadListReady() {
         selectSortMethod(selectedSortMethodId);
         view.showList(users.getUsers());
+    }
+
+    @Override
+    public void loadError(String msg) {
+        new Handler(Looper.getMainLooper()).post(() -> new AlertDialog.Builder(Globals.context)
+                .setTitle("Error")
+                .setMessage(msg)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Continue with delete operation
+                    System.exit(0);
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show());
     }
 }

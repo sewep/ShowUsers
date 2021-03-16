@@ -31,20 +31,13 @@ public class UserGithubGetter extends RestClient {
 
             UserObj u = new UserObj();
             u.isHighlighted = false;
-            u.reposytory = o.name;
+            u.repository = o.name;
             u.name = o.owner.login;
             u.avatar_url = o.owner.avatar_url;
             u.info = o.html_url;
             list.add(u);
         }
         return list;
-    }
-
-    boolean isListContains(List<UserObj> list, String name) {
-        for (UserObj o : list) {
-            if (o.name.equals(name)) return true;
-        }
-        return false;
     }
 
     @Override
@@ -57,6 +50,6 @@ public class UserGithubGetter extends RestClient {
     @Override
     public void responseError(String log) {
         if (respListener != null)
-            respListener.ReceviedNewUserError(log);
+            respListener.ReceivedNewUserError(log);
     }
 }

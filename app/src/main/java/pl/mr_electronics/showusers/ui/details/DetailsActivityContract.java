@@ -1,4 +1,4 @@
-package pl.mr_electronics.showusers.mvp.details;
+package pl.mr_electronics.showusers.ui.details;
 
 import pl.mr_electronics.showusers.model.UserObj;
 
