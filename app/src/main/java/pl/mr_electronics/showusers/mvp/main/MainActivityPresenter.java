@@ -12,6 +12,7 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
 
     MainActivityContract.View view;
     UserList users;
+    int selectedSortMethodId = 0;
 
     public MainActivityPresenter(MainActivityContract.View view) {
         this.view = view;
@@ -38,8 +39,25 @@ class MainActivityPresenter implements MainActivityContract.Presenter, UserListC
     }
 
     @Override
+    public void selectSortMethod(int sort_id) {
+        selectedSortMethodId = sort_id;
+        if (users != null) {
+            switch (selectedSortMethodId) {
+                case 0:
+                    users.sortByRepositoryName();
+                    break;
+                case 1:
+                    users.sortByUserName();
+                    break;
+            }
+
+            view.showList(users.getUsers());
+        }
+    }
+
+    @Override
     public void loadListReady() {
-        users.sortByRepositoryName();
+        selectSortMethod(selectedSortMethodId);
         view.showList(users.getUsers());
     }
 }
