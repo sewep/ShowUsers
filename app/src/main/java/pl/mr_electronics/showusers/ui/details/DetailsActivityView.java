@@ -1,4 +1,4 @@
-package pl.mr_electronics.showusers.mvp.details;
+package pl.mr_electronics.showusers.ui.details;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -65,17 +65,14 @@ public class DetailsActivityView extends AppCompatActivity implements DetailsAct
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void showUserDetails(UserObj userObj) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                id_bar.setBackgroundColor(userObj.isHighlighted
-                        ? ContextCompat.getColor(DetailsActivityView.this, R.color.teal_200)
-                        : ContextCompat.getColor(DetailsActivityView.this, R.color.white));
-                repo_name.setText(userObj.reposytory);
-                user_name.setText(userObj.name);
-                avatar.setImageBitmap(userObj.avatar);
-                webview.loadUrl(userObj.info);
-            }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            id_bar.setBackgroundColor(userObj.isHighlighted
+                    ? ContextCompat.getColor(DetailsActivityView.this, R.color.teal_200)
+                    : ContextCompat.getColor(DetailsActivityView.this, R.color.white));
+            repo_name.setText(userObj.repository);
+            user_name.setText(userObj.name);
+            avatar.setImageBitmap(userObj.avatar);
+            webview.loadUrl(userObj.info);
         });
     }
 }

@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,39 +17,32 @@ public abstract class RestClient {
 
     public void sendGet(String url) {
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                //Background work here
-                try {
-                    URL urlEndpoint = new URL(url);
-                    HttpsURLConnection connection = (HttpsURLConnection) urlEndpoint.openConnection();
-                    connection.setRequestProperty("User-Agent", "showusers-app-v0.1");
+        executor.execute(() -> {
+            try {
+                URL urlEndpoint = new URL(url);
+                HttpsURLConnection connection = (HttpsURLConnection) urlEndpoint.openConnection();
+                connection.setRequestProperty("User-Agent", "showusers-app-v0.1");
 
-                    if (connection.getResponseCode() == 200) {
-                        // Success
-                        InputStream responseBody = connection.getInputStream();
-                        InputStreamReader responseBodyReader =
-                                new InputStreamReader(responseBody, "UTF-8");
-                        BufferedReader reader = new BufferedReader(responseBodyReader);
-                        StringBuilder total = new StringBuilder();
-                        for (String line; (line = reader.readLine()) != null; ) {
-                            total.append(line).append('\n');
-                        }
-                        responseMessage(total.toString());
-                    } else {
-                        responseError("Error. Response code: " + connection.getResponseCode());
+                if (connection.getResponseCode() == 200) {
+                    // Success
+                    InputStream responseBody = connection.getInputStream();
+                    InputStreamReader responseBodyReader =
+                            new InputStreamReader(responseBody, StandardCharsets.UTF_8);
+                    BufferedReader reader = new BufferedReader(responseBodyReader);
+                    StringBuilder total = new StringBuilder();
+                    for (String line; (line = reader.readLine()) != null; ) {
+                        total.append(line).append('\n');
                     }
-
-                    connection.disconnect();
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    responseError(e.getMessage());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    responseError(e.getMessage());
+                    responseMessage(total.toString());
+                } else {
+                    responseError("Error. Response code: " + connection.getResponseCode());
                 }
+
+                connection.disconnect();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                responseError(e.getMessage());
             }
         });
 

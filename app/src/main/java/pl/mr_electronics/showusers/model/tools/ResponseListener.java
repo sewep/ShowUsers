@@ -8,5 +8,5 @@ public interface ResponseListener {
 
     void ReceiveNewUserList(List<UserObj> list);
 
-    void ReceviedNewUserError(String str);
+    void ReceivedNewUserError(String str);
 }

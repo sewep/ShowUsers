@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Showusers</string>
+    <string name="repository_name">Repository name</string>
+    <string name="user_name">User name</string>
+    <string name="reposytory_name">Reposytory name</string>
+    <string name="sort_by">Sort by</string>
+    <string name="no_internet_connection">No internet connection.</string>
 </resources>

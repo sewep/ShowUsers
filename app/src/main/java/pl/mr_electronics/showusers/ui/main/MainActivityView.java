@@ -1,10 +1,11 @@
-package pl.mr_electronics.showusers.mvp.main;
+package pl.mr_electronics.showusers.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -37,12 +38,7 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
         Globals.context = this;
         presenter = new MainActivityPresenter(this);
 
-        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                presenter.showDetailsUser(position);
-            }
-        });
+        list_view.setOnItemClickListener((parent, view, position, id) -> presenter.showDetailsUser(position));
         sort_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -57,24 +53,12 @@ public class MainActivityView extends AppCompatActivity implements MainActivityC
     }
 
     @Override
-    public void showLoadingStatus() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    @Override
     public void showList(List<UserObj> users) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                ListUsers adapter = new ListUsers(MainActivityView.this, R.id.list_view, users);
-                list_view.setAdapter(adapter);
-            }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            Log.i("userreceive","hidden progressbar");
+            progressBar.setVisibility(View.GONE);
+            ListUsers adapter = new ListUsers(MainActivityView.this, R.id.list_view, users);
+            list_view.setAdapter(adapter);
         });
 
     }

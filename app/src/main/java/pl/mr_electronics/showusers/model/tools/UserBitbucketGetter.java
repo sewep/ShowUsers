@@ -32,7 +32,7 @@ public class UserBitbucketGetter extends RestClient {
 
             UserObj u = new UserObj();
             u.isHighlighted = true;
-            u.reposytory = v.name;
+            u.repository = v.name;
             u.name = v.owner.display_name;
             u.avatar_url = v.owner.links.avatar.href;
             u.info = v.owner.links.html.href;
@@ -40,14 +40,6 @@ public class UserBitbucketGetter extends RestClient {
         }
         return list;
     }
-
-    boolean isListContains(List<UserObj> list, String name) {
-        for (UserObj o : list) {
-            if (o.name.equals(name)) return true;
-        }
-        return false;
-    }
-
 
 
     @Override
@@ -60,6 +52,6 @@ public class UserBitbucketGetter extends RestClient {
     @Override
     public void responseError(String log) {
         if (respListener != null)
-            respListener.ReceviedNewUserError(log);
+            respListener.ReceivedNewUserError(log);
     }
 }

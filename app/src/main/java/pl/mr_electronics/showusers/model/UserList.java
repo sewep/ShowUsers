@@ -2,11 +2,15 @@ package pl.mr_electronics.showusers.model;
 
 import android.util.Log;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import pl.mr_electronics.showusers.Globals;
+import pl.mr_electronics.showusers.R;
 import pl.mr_electronics.showusers.model.tools.AvatarDownloader;
 import pl.mr_electronics.showusers.model.tools.ResponseListener;
 import pl.mr_electronics.showusers.model.tools.UserBitbucketGetter;
@@ -18,8 +22,10 @@ public class UserList implements ResponseListener {
     List<UserObj> users = new ArrayList<>();
     int runListDownload = 0;
     UserListCom userListCom;
+    ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private UserList() {};
+    private UserList() {}
+
     public static UserList getInstance() {
         if (instance == null) {
             instance = new UserList();
@@ -28,16 +34,21 @@ public class UserList implements ResponseListener {
     }
 
     public void downloadUsersLists() {
-        // Clear current list before update
-        users.clear();
-        // Download user list from Bitbucket
-        runListDownload++;
-        UserBitbucketGetter usersBitbucket = new UserBitbucketGetter(this);
-        usersBitbucket.downloadList();
-        // Download users from GitHub
-        runListDownload++;
-        UserGithubGetter usersGithub = new UserGithubGetter(this);
-        usersGithub.downloadList();
+        executor.execute(() -> {
+            if (isInternetAvailable()) {
+                // Clear current list before update
+                users.clear();
+                runListDownload += 2;
+                // Download user list from Bitbucket
+                UserBitbucketGetter usersBitbucket = new UserBitbucketGetter(this);
+                usersBitbucket.downloadList();
+                // Download users from GitHub
+                UserGithubGetter usersGithub = new UserGithubGetter(this);
+                usersGithub.downloadList();
+            } else {
+                userListCom.loadError(Globals.context.getString(R.string.no_internet_connection));
+            }
+        });
     }
 
     public void downloadMissingAvatars() {
@@ -61,11 +72,21 @@ public class UserList implements ResponseListener {
     }
 
     public void sortByRepositoryName() {
-        Collections.sort(users, (o1, o2) -> o1.reposytory.compareToIgnoreCase(o2.reposytory));
+        Collections.sort(users, (o1, o2) -> o1.repository.compareToIgnoreCase(o2.repository));
     }
 
     public void sortByUserName() {
         Collections.sort(users, (o1, o2) -> o1.name.compareToIgnoreCase(o2.name));
+    }
+
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            return !ipAddr.equals("");
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -84,7 +105,7 @@ public class UserList implements ResponseListener {
     }
 
     @Override
-    public void ReceviedNewUserError(String str) {
+    public void ReceivedNewUserError(String str) {
 
     }
 }

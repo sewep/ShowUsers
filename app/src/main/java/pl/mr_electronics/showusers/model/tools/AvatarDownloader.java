@@ -34,28 +34,24 @@ public class AvatarDownloader {
         bitmapCaches.add(bitmapCache);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
+        executor.execute(() -> {
+            runThreads++;
 
-                runThreads++;
-
-                Bitmap bmp = getBitmapFromURL(userObj.avatar_url);
-                if (bmp != null) {
-                    bitmapCache.bitmap = getResizedBitmap(bmp, 64, 64);
-                    Log.i("userreceive","Avatar download ok");
-                } else {
-                    // Load default avatar
-                    Bitmap bmp2 = BitmapFactory.decodeResource(Globals.context.getResources(),
-                            R.drawable.noawatar);
-                    bitmapCache.bitmap = getResizedBitmap(bmp2, 64, 64);
-                    Log.i("userreceive","Avatar default image");
-                }
-
-                downloaded++;
-                System.out.println("Avatar downloaded " + downloaded);
-                runThreads--;
+            Bitmap bmp = getBitmapFromURL(userObj.avatar_url);
+            if (bmp != null) {
+                bitmapCache.bitmap = getResizedBitmap(bmp, 64, 64);
+                Log.i("userreceive","Avatar download ok");
+            } else {
+                // Load default avatar
+                Bitmap bmp2 = BitmapFactory.decodeResource(Globals.context.getResources(),
+                        R.drawable.noawatar);
+                bitmapCache.bitmap = getResizedBitmap(bmp2, 64, 64);
+                Log.i("userreceive","Avatar default image");
             }
+
+            downloaded++;
+            System.out.println("Avatar downloaded " + downloaded);
+            runThreads--;
         });
     }
 
@@ -91,8 +87,7 @@ public class AvatarDownloader {
             connection.setUseCaches(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -104,16 +99,10 @@ public class AvatarDownloader {
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
         Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
         matrix.postScale(scaleWidth, scaleHeight);
 
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-                matrix, false);
-
-        return resizedBitmap;
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
     }
 
     boolean isUrlInBitmapCache(String url) {
@@ -135,17 +124,7 @@ public class AvatarDownloader {
         return null;
     }
 
-    BitmapCache findBitmapCache(String url) {
-        for (int i = 0; i < bitmapCaches.size(); i++) {
-            if (bitmapCaches.get(i).url.equals(url)) {
-                Log.i("mcache", "Image from cache.");
-                return bitmapCaches.get(i);
-            }
-        }
-        return null;
-    }
-
-    class BitmapCache {
+    static class BitmapCache {
         public String url;
         public Bitmap bitmap;
 
