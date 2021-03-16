@@ -82,7 +82,7 @@ public class UserList implements ResponseListener {
     public boolean isInternetAvailable() {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
-            return !ipAddr.equals("");
+            return !ipAddr.toString().equals("");
 
         } catch (Exception e) {
             return false;
